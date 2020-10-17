@@ -88,16 +88,6 @@
         ext.moveForward(0);
     };
 
-    ext.stepForward = function (speed, duration, callback) {
-        ext.moveForward(speed);
-        setTimeout(ext.stop(), duration*1000); 
-        callback();
-    };
-
-    ext.stepBackward = function (speed, duration, callback) {
-        ext.stepForward(-speed, duration, callback);
-    };
-
     ext.turnLeft = function (speed) {
         ext.move(-speed/turnRatio, -speed/turnRatio, speed, speed);
     }
@@ -108,14 +98,18 @@
 
     ext.stepLeft = function (speed, duration, callback) {
         ext.turnLeft(speed);
-        setTimeout(ext.stop(), duration*1000);
-        callback(); 
+        setTimeout(function(){
+            ext.stop();
+            callback();
+        }, duration*1000); 
     };
 
     ext.stepRight = function (speed, duration, callback) {
         ext.turnRight(speed);
-        setTimeout(ext.stop(), duration*1000);
-        callback(); 
+        setTimeout(function(){
+            ext.stop();
+            callback();
+        }, duration*1000);
     };
 
     ext.setLedMode = function(mode) {
@@ -141,56 +135,20 @@
             }
         });
     };
-
-    ext.lightRed = function () {
-        $.ajax({
-            url: baseUrl + 'lightRed/',
-            dataType: 'text',
-            success: function (data) {
-            }
-        });
-    };
-
-    ext.lightGreen = function () {
-        $.ajax({
-            url: baseUrl + 'lightGreen/',
-            dataType: 'text',
-            success: function (data) {
-            }
-        });
-    };
-
-    ext.lightBlue = function () {
-        $.ajax({
-            url: baseUrl + 'lightBlue/',
-            dataType: 'text',
-            success: function (data) {
-            }
-        });
-    };
-
+*/
+    
     ext.buzz = function (duration) {
-        setTimeout(function () {
-            $.ajax({
-                url: baseUrl + 'buzz/' + duration.toString(),
-                dataType: 'text',
-                success: function (data) {
-                }
-            });
-        }, 10)
+        var data = 'CMD_BUZZER' + intervalChar + duration.toString() + endChar;
+        client.write(data);
     };
 
     ext.buzzWait = function (duration, callback) {
-        $.ajax({
-            url: baseUrl + 'buzz/' + duration.toString(),
-            dataType: 'text',
-            success: function (data) {
-                callback();
-            }
-        });
+        var data = 'CMD_BUZZER' + intervalChar + duration.toString() + endChar;
+        client.write(data);
+        setTimeout(callback(),duration);
     };
 
-    ext.distance = function (callback) {
+/*    ext.distance = function (callback) {
         $.ajax({
             url: baseUrl + 'distance/',
             dataType: 'text',
@@ -234,21 +192,19 @@
             [" ", "Move Forward at speed %n", "moveForward", 1000],
             [" ", "Move Backward at speed %n", "moveBackward", 1000],
             [" ", "stop", "stop"],
-// Need to work out how to get "w" (wait for response) to work            ["w", "Step Forward at speed %n for %n s", "stepForward", 1000, 1],
-//            ["w", "Step Backward at speed %n for %n s", "stepBackward", 1000, 1],
             [" ", "Turn Left at speed %n", "turnLeft", 2000],
             ["w", "Turn Left at speed %n for %n s", "stepLeft", 2000, 2],
             [" ", "Turn Right at speed %n", "turnRight", 2000],
             ["w", "Turn Right at speed %n for %n s", "stepRight", 2000, 2],
             [" ", "LED show mode %m.mode", "setLedMode", 1],
             [" ", "Set LED number %n to RGB value %n,%n,%n", "setLed"],
-            [" ", "Turn LEDs off","LedOff"]
+            [" ", "Turn LEDs off","LedOff"],
 //            ["w", "center", "center"],
 //            [" ", "Toggle Red light", "lightRed"],
 //            [" ", "Toggle Green light", "lightGreen"],
 //            [" ", "Toggle Blue light", "lightBlue"],
-//            [" ", "Buzz for %n ms", "buzz", 1000],
-//            ["w", "Buzz and Wait for %n ms", "buzzWait", 1000],
+            [" ", "Buzz for %n s", "buzz", 1],
+            ["w", "Buzz and Wait for %n ms", "buzzWait", 1000]
 //            ["R", "distance", "distance"],
 //            ["R", "lastError", "lastError"],
 //            ["R", "lastMessage", "lastMessage"]

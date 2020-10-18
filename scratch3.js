@@ -14,9 +14,53 @@ class PiCar { //In both instances, NitroBlock will be the name in both instances
                             "defaultValue": "192.168.1.139"
                         }
                     }
-            }],
-            "menus": { //we will get back to this in a later tutorial
-            }
+                },
+                {
+                    "opcode": "disconnect",
+                    "blockType": "command",
+                    "text": "Disconnect TCP server connection"
+                    }
+                },
+                {
+                    "opcode": "setLedMode",
+                    "blockType": "command",
+                    "text": "Start LED show in mode [mode]",
+                    "arguments": {
+                        "mode": {
+                            "type": "string",
+                            "defaultValue": "1"
+                        }
+                    }
+                },
+                {
+                    "opcode": "setLed",
+                    "blockType": "command",
+                    "text": "Set LED number [LED] to RGB value [R],[G],[B]",
+                    "arguments": {
+                        "LED": {
+                            "type": "string",
+                            "defaultValue": "1"
+                        },
+                       "R": {
+                           "type": "string",
+                            "defaultValue": "255"
+                       },
+                       "G": {
+                           "type": "string",
+                            "defaultValue": "255"
+                       },
+                       "B": {
+                           "type": "string",
+                            "defaultValue": "255"
+                       }
+                    }
+                },
+                {
+                    "opcode": "LedOff",
+                    "blockType": "command",
+                    "text": "Turn LEDs off",
+                }
+            ]
         };
     }
     

@@ -1,4 +1,4 @@
-class PiCar { //In both instances, NitroBlock will be the name in both instances
+class PiCar {
 
     getInfo() {
         return {
